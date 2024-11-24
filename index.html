@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تسجيل حضور الطلاب</title>
+   <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+#barcode-section {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: calc(100% - 22px);
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+   </style>
+</head>
+<body>
+    <header>
+        <h1>نظام تسجيل حضور الطلاب</h1>
+    </header>
+    <main>
+        <section id="barcode-section">
+            <h2>مسح الباركود</h2>
+            <input type="text" id="barcode-input" placeholder="امسح الباركود هنا" autofocus>
+            <button id="submit-button">تسجيل الحضور</button>
+        </section>
+        <section id="attendance-section">
+            <h2>بيانات الحضور</h2>
+            <table id="attendance-table">
+                <thead>
+                    <tr>
+                        <th>رقم الطالب</th>
+                        <th>اسم الطالب</th>
+                        <th>تاريخ الحضور</th>
+                        <th>الوقت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- بيانات الحضور ستضاف هنا -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <script >
+        document.addEventListener('DOMContentLoaded', () => {
+    const barcodeInput = document.getElementById('barcode-input');
+    const submitButton = document.getElementById('submit-button');
+    const attendanceTableBody = document.querySelector('#attendance-table tbody');
+
+    // بيانات وهمية للطلاب
+    const students = {
+        '123456': 'أحمد علي',
+        '654321': 'سارة محمد'
+    };
+
+    submitButton.addEventListener('click', () => {
+        const barcode = barcodeInput.value.trim();
+        if (barcode) {
+            const studentName = students[barcode];
+            if (studentName) {
+                const now = new Date();
+                const date = now.toLocaleDateString('ar-EG');
+                const time = now.toLocaleTimeString('ar-EG');
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${barcode}</td>
+                    <td>${studentName}</td>
+                    <td>${date}</td>
+                    <td>${time}</td>
+                `;
+                attendanceTableBody.appendChild(row);
+
+                // مسح الحقل بعد التسجيل
+                barcodeInput.value = '';
+                barcodeInput.focus();
+            } else {
+                alert('رقم الباركود غير صحيح!');
+            }
+        } else {
+            alert('يرجى إدخال رقم الباركود!');
+        }
+    });
+    </script>
+</body>
+</html>
